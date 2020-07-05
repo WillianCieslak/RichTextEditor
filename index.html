@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Rich Text Editor using JavaScript</title>
+    <script src="https://use.fontawesome.com/aac5c45839.js"></script>
+    <link rel="stylesheet" type="text/css" href="index.css" />
+</head>
+
+<body onload="enableEditMode();" id="out">
+    <div id="container">
+        <table id="tableContainer">
+            <th>
+                <table>
+                    <!-- Buttons-->
+                    <tr>
+                        <th>
+                            <button onclick="actionCommand('bold', this.id);" id="bold"><i
+                                    class="fa fa-bold"></i></button>
+                        </th>
+                        <th>
+                            <button onclick="actionCommand('italic', this.id);" id="italic"><i
+                                    class="fa fa-italic"></i></button>
+                        </th>
+                        <th>
+                            <button onclick="actionCommand('underLine', this.id);" id="underLine"><i
+                                    class="fa fa-underline"></i></button>
+                        </th>
+                        <th>
+                            <button onclick="actionCommand('strikeThrough', this.id);" id="strikeThrough"><i
+                                    class="fa fa-strikethrough"></i></button>
+                        </th>
+                        <th>
+                            <button onclick="actionCommand('justifyLeft', null);" id="justifyLeft"><i
+                                    class="fa fa-align-left"></i></button>
+                        </th>
+                        <th>
+                            <button onclick="actionCommand('justifyCenter', null);" id="justifyCenter"><i
+                                    class="fa fa-align-center"></i></button>
+                        </th>
+                        <th>
+                            <button onclick="actionCommand('justifyRight', null);" id="justifyRight"><i
+                                    class="fa fa-align-right"></i></button>
+                        </th>
+                        <th>
+                            <button onclick="actionCommand('justifyFull', null);" id="justifyFull"><i
+                                    class="fa fa-align-justify"></i></button>
+                        </th>
+                        <th>
+                            <button onclick="actionCommand('subscript', this.id);" id="subscript"><i
+                                    class="fa fa-subscript"></i></button>
+                        </th>
+                        <th>
+                            <button onclick="actionCommand('superscript', this.id);" id="superscript"><i
+                                    class="fa fa-superscript"></i></button>
+                        </th>
+                        <th>
+                            <button onclick="actionCommand('insertUnorderedList', null);" id="insertUnorderedList"><i
+                                    class="fa fa-list-ul"></i></button>
+                        </th>
+                        <th>
+                            <button onclick="actionCommand('insertOrderedList', null);" id="insertOrderedList"><i
+                                    class="fa fa-list-ol"></i></button>
+                        </th>
+                        <th>
+                            <button onclick="actionCommand('insertHorizontalRule', null);">HR</button>
+                        </th>
+                        <th>
+                            <button onclick="actionCommandwithArg('createLink', prompt('Enter a URL', 'http://'));"><i
+                                    class="fa fa-link"></i>
+                            </button>
+                        </th>
+                        <th>
+                            <button onclick="actionCommand('unlink');"><i class="fa fa-unlink"></i></button>
+                        </th>
+                        <th>
+                            <button onclick="actionCommandwithArg('formatBlock', '<pre>', this.id);" id="formatBlock"><i
+                                    class="fa fa-code"></i></button>
+                        </th>
+                    </tr>
+                </table>
+
+                <!-- Fonts -->
+                <table id="minorTable">
+                    <tr>
+                        <th>
+                            <select onchange="actionCommandwithArg('fontName', this.value, null);">
+                                <option value="Arial">Arial</option>
+                                <option value="Comic Sans MS">Comic Sans</option>
+                                <option value="Courier">Courier</option>
+                                <option value="Georgia">Georgia</option>
+                                <option value="Tahoma">Tahoma</option>
+                                <option value="Times New Roman">Times New Roman</option>
+                                <option value="Verdana">Verdana</option>
+                            </select>
+                        </th>
+
+                        <!-- Font Size -->
+                        <th>
+                            <select onchange="actionCommandwithArg('fontSize', this.value, null);">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                            </select>
+                        </th>
+
+                        <!-- Fore and Background colors -->
+                        <th>
+                            Fore Color: <input type="color"
+                                onchange="actionCommandwithArg('foreColor', this.value, null);" />
+                        </th>
+                        <th>
+                            Background: <input type="color"
+                                onchange="actionCommandwithArg('hiliteColor', this.value, null);" />
+                        </th>
+                        <th>
+                            <button class="textButton" onclick="toggleEdit(this.id);" id="toggleEdit">Toggle
+                                Edit</button>
+                        </th>
+                        <th>
+                            <button class="textButton" onclick="toggleSource(this.id);" id="htmlFormat">HTML
+                                format</button>
+                        </th>
+                </table>
+
+                <!-- TextEditor -->
+                <iframe name="richTextEditor" id="richTextEditor"></iframe>
+                <br />
+                <button onclick="exportData();" class="textButton">Export</button>
+    </div>
+
+    <!-- JavaScript -->
+    <script type="text/javascript">
+
+        var showingSouceCode = false;
+        var isInEditMode = true;
+        var exportValue = "";
+
+        function enableEditMode() {
+            richTextEditor.document.designMode = 'On';
+        }
+
+        function getFocus(element) {
+            document.getElementsByName(element)[0].contentWindow.document.body.focus();
+        }
+
+        function buttonClicked(buttonId) {
+            if (document.getElementById(buttonId).style.backgroundColor == "slategray") {
+                document.getElementById(buttonId).style.backgroundColor = "white";
+                document.getElementById(buttonId).style.color = "black";
+            } else {
+                document.getElementById(buttonId).style.backgroundColor = "slategray";
+                document.getElementById(buttonId).style.color = "white";
+            }
+        }
+
+        function actionCommand(command, buttonId) {
+            if (buttonId) {
+                buttonClicked(buttonId);
+            }
+
+            richTextEditor.document.execCommand(command, false, null);
+            getFocus('richTextEditor');
+        }
+
+        function actionCommandwithArg(command, arg, buttonId) {
+            if (buttonId) {
+                buttonClicked(buttonId);
+            }
+
+            if (buttonId == "formatBlock" && document.getElementById(buttonId).style.backgroundColor == "white") {
+                richTextEditor.document.execCommand(command, false, '<p>');
+            } else {
+                richTextEditor.document.execCommand(command, false, arg);                
+            }
+            getFocus('richTextEditor');
+        }
+
+        function toggleSource(buttonId) {
+            if (buttonId) {
+                buttonClicked(buttonId);
+            }
+            if (showingSouceCode) {
+                richTextEditor.document.getElementsByTagName('body')[0].innerHTML = richTextEditor.document.getElementsByTagName('body')[0].textContent;
+                showingSouceCode = false;
+            } else {
+                richTextEditor.document.getElementsByTagName('body')[0].textContent = richTextEditor.document.getElementsByTagName('body')[0].innerHTML;
+                showingSouceCode = true;
+            }
+            getFocus('richTextEditor');
+        }
+
+        function toggleEdit(buttonId) {
+            if (buttonId) {
+                buttonClicked(buttonId);
+            }
+            if (isInEditMode) {
+                richTextEditor.document.designMode = 'Off';
+                document.getElementById('richTextEditor').style.backgroundColor = "lightGray";
+                isInEditMode = false;
+            } else {
+                richTextEditor.document.designMode = 'On';
+                document.getElementById('richTextEditor').style.backgroundColor = "white";
+                isInEditMode = true;
+            }
+            getFocus('richTextEditor');
+        }
+
+        function exportData() {
+            richTextEditor.document.execCommand("selectAll", false, null);
+            richTextEditor.document.execCommand("copy", false, null);
+        }
+
+    </script>
+</body>
+
+</html>

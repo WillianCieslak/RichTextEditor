@@ -1,0 +1,66 @@
+html {
+    height: 100%;
+}
+
+body {
+    position: fixed;
+    top: 5%;
+    left: 15%;
+    height: 100%;
+    margin: 0;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    height: 200px;
+    background-color: #8EC5FC;
+    background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%);
+}
+
+iframe {
+    width: 900px;
+    height: 550px;
+    border-radius: 8px;
+    border: 2px solid #ccc;
+    background-color: white;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+#container {
+    margin-top: 3%;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+button {
+    text-size-adjust: true;
+    width: 50px;
+    height: 30px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    border-radius: 8px;
+    transition-duration: 0.4s;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.textButton {
+    width: 100px; 
+}
+
+table, th, td {
+    padding: 2px;
+    border: thin;
+    border-style: groove;
+    border-color: transparent;
+}
+
+#minorTable {
+      margin-left: 12%;
+      background-color: light;
+}
+
+  
+button:hover {
+    background-color: slategray;
+    color: white;
+  }
